@@ -11,9 +11,7 @@ var VSHADER_SOURCE =
 
 // 片元着色器
 var FSHADE_SOURCE =
-    'void main () {\n' +
-    'gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +
-    '}\n';
+    'void main () {\n' + 'gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' + '}\n';
 function main() {
     // 获取<canvas> 元素
     var canvas = document.getElementById('webgl');
@@ -39,8 +37,8 @@ function main() {
     var a_PointSize = gl.getAttribLocation(gl.program, 'a_PointSize');
     // 注册鼠标点击事件
     canvas.onmousedown = function (ev) {
-        click(ev, gl, canvas, a_Position)
-    }
+        click(ev, gl, canvas, a_Position);
+    };
 
     // 将点的位置传给attribute变量
     gl.vertexAttrib3f(a_Position, 0.0, 0.0, 0.0);
@@ -49,7 +47,6 @@ function main() {
     // 设置画布背景色
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-
 }
 var g_points = []; // 鼠标点击位置数组
 
@@ -58,7 +55,7 @@ function click(ev, gl, canvas, a_Position) {
     var y = ev.clientY;
     var rect = ev.target.getBoundingClientRect();
     // 坐标转换 书中源码有误
-    x = ((x - rect.left) - canvas.width / 2) / (canvas.width / 2);
+    x = (x - rect.left - canvas.width / 2) / (canvas.width / 2);
     y = (canvas.height / 2 - (y - rect.top)) / (canvas.height / 2);
 
     g_points.push(x);
@@ -66,8 +63,8 @@ function click(ev, gl, canvas, a_Position) {
 
     gl.clear(gl.COLOR_BUFFER_BIT);
     var len = g_points.length;
-    for(var i = 0; i< len; i+=2){
-        gl.vertexAttrib3f(a_Position, g_points[i], g_points[i+1], 0);
-        gl.drawArrays(gl.Points, 0, 1)
+    for (var i = 0; i < len; i += 2) {
+        gl.vertexAttrib3f(a_Position, g_points[i], g_points[i + 1], 0);
+        gl.drawArrays(gl.Points, 0, 1);
     }
 }

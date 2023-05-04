@@ -11,10 +11,10 @@ var VSHADER_SOURCE =
 
 // 片元着色器
 var FSHADE_SOURCE =
-    'precision mediump float;\n'+ // 设置float精度
-    'uniform vec4 u_FragColor;\n' + 
+    'precision mediump float;\n' + // 设置float精度
+    'uniform vec4 u_FragColor;\n' +
     'void main () {\n' +
-        'gl_FragColor = u_FragColor;\n' +
+    'gl_FragColor = u_FragColor;\n' +
     '}\n';
 function main() {
     // 获取<canvas> 元素
@@ -38,19 +38,16 @@ function main() {
 
     var n = initVertexBuffers(gl);
 
-    gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0)
+    gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
     // 将点的大小传给attribute变量
     gl.vertexAttrib1f(a_PointSize, 5.0);
     // 设置画布背景色
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.Points, 0, n)
-
+    gl.drawArrays(gl.Points, 0, n);
 }
 function initVertexBuffers(gl) {
-    var vertexs = new Float32Array([
-        0.0, 0.5, -0.5, -0.5, 0.5 ,-0.5
-    ]);
+    var vertexs = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0.5]);
 
     var n = 3;
 
@@ -70,5 +67,4 @@ function initVertexBuffers(gl) {
     gl.enableVertexAttribArray(a_Position);
 
     return n;
-
 }
