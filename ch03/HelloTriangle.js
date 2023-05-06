@@ -1,12 +1,10 @@
-// HelloPoint2.js
+// HelloTriangle.js
 // 顶点着色器 传递变量
 
 var VSHADER_SOURCE =
     'attribute vec4 a_Position;\n' +
-    'attribute float a_PointSize;\n' +
     'void main () {\n' +
     '   gl_Position = a_Position;\n' +
-    '   gl_PointSize = a_PointSize;\n' +
     '}\n';
 
 // 片元着色器
@@ -31,7 +29,6 @@ function main() {
         return;
     }
 
-    var a_PointSize = gl.getAttribLocation(gl.program, 'a_PointSize');
 
     // 获取u_FragColor地址
     var u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
@@ -39,12 +36,10 @@ function main() {
     var n = initVertexBuffers(gl);
 
     gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
-    // 将点的大小传给attribute变量
-    gl.vertexAttrib1f(a_PointSize, 5.0);
     // 设置画布背景色
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.Points, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
 }
 function initVertexBuffers(gl) {
     var vertexs = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0.5]);

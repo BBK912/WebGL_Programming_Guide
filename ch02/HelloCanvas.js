@@ -9,7 +9,7 @@ function main() {
         return;
     }
     // 指定情况 画布的颜色 rgba 参数均为float类型 均为0.0 -- 1.0
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 1.0, 0.0, 1.0);
 
     /**
      * 将指定缓冲区设定为预定的值
