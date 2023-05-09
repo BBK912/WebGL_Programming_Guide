@@ -39,8 +39,6 @@ function main() {
     var n = initVertexBuffers(gl);
 
     gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
-    // 将点的大小传给attribute变量
-    gl.vertexAttrib1f(a_PointSize, 5.0);
     // 设置画布背景色
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -49,8 +47,8 @@ function main() {
 function initVertexBuffers(gl) {
     var vertexSize = new Float32Array([
         0.0, 0.5, 10.0,
-         -0.5, -0.5, 20.0,
-          0.5, -0.5, 30.0]);
+        -0.5, -0.5, 20.0,
+        0.5, -0.5, 30.0]);
 
     var n = 3;
     var FSIZE = vertexSize.BYTES_PER_ELEMENT;

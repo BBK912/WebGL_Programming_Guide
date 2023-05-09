@@ -1,20 +1,22 @@
-// MultiAttributeSize.js
+// MultiAttributeColor.js
 // 顶点着色器 传递变量
 
 var VSHADER_SOURCE =
     'attribute vec4 a_Position;\n' +
-    'attribute float a_PointSize;\n' +
+    'attribute vec4 a_Color;\n' +
+    'varying vec4 v_Color; \n' +
     'void main () {\n' +
     '   gl_Position = a_Position;\n' +
-    '   gl_PointSize = a_PointSize;\n' +
+    '   gl_PointSize = 10.0;\n' +
+    '   v_Color = a_Color; \n' +
     '}\n';
 
 // 片元着色器
 var FSHADE_SOURCE =
     'precision mediump float;\n' + // 设置float精度
-    'uniform vec4 u_FragColor;\n' +
+    'varying vec4 v_Color;\n' +
     'void main () {\n' +
-    'gl_FragColor = u_FragColor;\n' +
+    'gl_FragColor = v_Color;\n' +
     '}\n';
 function main() {
     // 获取<canvas> 元素
@@ -31,50 +33,43 @@ function main() {
         return;
     }
 
-
-    // 获取u_FragColor地址
-    var u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
-
     var n = initVertexBuffers(gl);
-
-    gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
     // 设置画布背景色
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.Points, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
 }
 function initVertexBuffers(gl) {
-    var vertexs = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0.5]);
+    var verticesColors = new Float32Array([
+        0.0, 0.5, 1.0, 0.0, 0.0,
+        -0.5, -0.5, 0.0, 1.0, 0.0,
+        0.5, -0.5, 0.0, 0.0, 1.0]);
 
     var n = 3;
-    var sizes = new Float32Array([10.0, 20.0, 30.0]);
+    var FSIZE = verticesColors.BYTES_PER_ELEMENT;
 
     // 创建缓冲区对象
-    var vertexBuffer = gl.createBuffer();
-    var sizeBuffer = gl.createBuffer();
-    if (!vertexBuffer) {
+    var vertexColorBuffer = gl.createBuffer();
+    if (!vertexColorBuffer) {
         console.log('Failed to create the buffer object');
         return -1;
     }
 
     // 绑定缓冲区
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorBuffer);
 
     // 向缓冲区写入数据
-    gl.bufferData(gl.ARRAY_BUFFER, vertexs, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
 
 
     var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
     // 将缓冲区对象分配给 attribute 变量 
-    gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, FSIZE * 5, 0);
     // 开启 attribute 变量
     gl.enableVertexAttribArray(a_Position);
 
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, sizes, gl.STATIC_DRAW);
-    var a_PointSize = gl.getAttribLocation(gl.program, 'a_PointSize');
-    gl.vertexAttribPointer(a_PointSize, 1, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(a_PointSize);
+    var a_Color = gl.getAttribLocation(gl.program, 'a_Color');
+    gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, FSIZE * 5, FSIZE * 2);
+    gl.enableVertexAttribArray(a_Color)
     return n;
 }
